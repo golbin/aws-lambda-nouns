@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>mecab-ya example</title>
+    <link rel='stylesheet' href='style.css' />
+    <script src='wordcloud2.js'></script>
+    <script src='//ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js'></script>
+  </head>
+  <body>
+    <h1>mecab-ya example</h1>
+
+<canvas id="canvas"></canvas>
+
+<p />
+
+<textarea id="text" cols="30" rows="10">
+    서시 - 윤동주
+
+    죽는 날까지 하늘을 우러러
+    한 점 부끄럼이 없기를.
+    잎새에 이는 바람에도
+    나는 괴로워했다.
+
+    별을 노래하는 마음으로
+    모든 죽어가는 것을 사랑해야지
+    그리고 나한테 주어진 길을
+    걸어가야겠다.
+
+    오늘 밤에도 별이 바람에 스치운다.
+</textarea>
+
+<p />
+
+<input type=text value="26" id="weightFactor" size=3><button id="reload">Reload</button>
+  </body>
+
+  <script>
+        var apiUrl = 'YOUR-ENDPOINT';
+        var apiKey = 'YOUR-API-KEY';
+
+        var cloudOptions = {
+            gridSize: 8,
+            weightFactor: 26,
+            fontFamily: 'serif',
+            color: 'random-light',
+            backgroundColor: '#333',
+            rotateRatio: 0
+        };
+
+        var countWord = function (words) {
+            var words = words.reduce(function (result, word) {
+                if (result[word] == undefined) {
+                    result[word] = 1;
+                } else {
+                    result[word]++;
+                }
+
+                return result;
+            }, {});
+
+            var wordAndCount = [];
+            for (var word in words) {
+                wordAndCount.push([word, words[word]]);
+            }
+
+            return wordAndCount;
+        };
+
+        var refreshCloud = function (words) {
+            cloudOptions.list = countWord(words);
+            cloudOptions.weightFactor = $('#weightFactor').val();
+
+            WordCloud($('#canvas')[0], cloudOptions);
+        };
+
+        var reloadCloud = function (text) {
+            $.ajax({
+                url: apiUrl,
+                type: 'POST',
+                data: JSON.stringify({text: text}),
+                headers: {
+                    'X-Api-Key': apiKey
+                },
+                dataType: 'json',
+                success: function (data) {
+                    refreshCloud(data);
+                }
+            });
+        };
+
+        $("#reload").click(function(){
+            reloadCloud($('#text').val());
+        });
+
+        $(document).ready(function() {
+            reloadCloud($('#text').val());
+        });
+    </script>
+</html>

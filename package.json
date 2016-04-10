@@ -1,0 +1,30 @@
+{
+  "name": "aws-lambda-nouns",
+  "version": "0.1.0",
+  "description": "aws lambda function to extract nouns with mecab-ya",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/golbin/aws-lambda-nouns.git"
+  },
+  "keywords": [
+    "aws",
+    "lambda",
+    "nouns",
+    "mecab",
+    "mecab-ya",
+    "nlp"
+  ],
+  "author": "Jin Kim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/golbin/aws-lambda-nouns/issues"
+  },
+  "homepage": "https://github.com/golbin/aws-lambda-nouns#readme",
+  "dependencies": {
+    "mecab-ya": "^0.1.1"
+  }
+}
